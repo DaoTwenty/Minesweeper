@@ -9,10 +9,11 @@ public class GridGeneration {
 	
 	private final Grid grid;
 	private final int generationAlgorithm;
-	private static double density;
+	private double density;
 	
-	public GridGeneration(Grid grid, int generationAlgorithm) {
+	public GridGeneration(Grid grid, int generationAlgorithm, double density) {
 		this.grid = grid;
+		this.density = density;
 		this.generationAlgorithm = generationAlgorithm;
 		switch (this.generationAlgorithm) {
 			case 1:
@@ -20,11 +21,7 @@ public class GridGeneration {
 				break;
 		}
 	}
-	
-	public static void setDensity(double d) {
-		GridGeneration.density = d;
-	}
-	
+
 	public double getDensity() {
 		return density;
 	}
