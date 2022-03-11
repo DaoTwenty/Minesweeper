@@ -1,9 +1,11 @@
 package Grid;
 
+import java.util.ArrayList;
+
 public class EmptyTile extends Tile{
 	
 	public int prox;
-	private boolean hidden = true;
+	public int markedBombs = 0;
 	
 	public EmptyTile(int x, int y, Grid grid) {
 		super(x, y, grid);
@@ -20,13 +22,17 @@ public class EmptyTile extends Tile{
 	public String getType() {
 		return "E";
 	}
-	
-	public boolean isHidden() {
-		return hidden;
-	}
-	
-	public void unHide() {
-		hidden = false;
+
+	public void addMarkedBombs(boolean add) {
+		if (add) {
+			markedBombs++;
+		}
+		else {
+			markedBombs--;
+		}
 	}
 
+	public int getMarkedBombs() {
+		return markedBombs;
+	}
 }

@@ -22,12 +22,21 @@ public class Grid {
 		return width;
 	}
 	
-	public ArrayList<Tile> getGrid() {
+	public ArrayList<Tile> getTiles() {
 		return tiles;
 	}
 	
 	public void add(Tile tile) {
 		tiles.add(tile);
+	}
+
+	public Tile getTile(int n) {
+		return tiles.get(n);
+	}
+
+	public Tile getTile(int x, int y)  {
+		int n = x*height + y;
+		return getTile(n);
 	}
 	
 	@Override

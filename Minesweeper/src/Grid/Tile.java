@@ -1,11 +1,15 @@
 package Grid;
 
 
+import java.util.ArrayList;
+
 public abstract class Tile {
 
 	private final int x;
 	private final int y;
 	private final Grid grid;
+	private boolean marked = false;
+	private boolean hidden = true;
 	
 	public Tile(int x, int y, Grid grid) {
 		this.x = x;
@@ -26,10 +30,93 @@ public abstract class Tile {
 	}
 	
 	public abstract String getType();
+
+	public boolean isMarked() {
+		return marked;
+	}
+
+	public void mark() {
+		marked = !marked;
+		ArrayList<Tile> proxTiles = getProxTiles();
+		for (Tile tile  : proxTiles) {
+			if (tile.getType().equals("E")) {
+				EmptyTile emptyTile = (EmptyTile) tile;
+				if (marked) {
+					emptyTile.addMarkedBombs(true);
+				}
+				else {
+					emptyTile.addMarkedBombs(false);
+				}
+			}
+		}
+	}
+
+	public boolean isHidden() {
+		return hidden;
+	}
+
+	public void unHide() {
+		hidden = false;
+	}
 	
 	@Override
 	public String toString() {
 		return getType();
+	}
+
+	public ArrayList<Tile> getProxTiles() {
+		ArrayList<Tile> proxTiles = new ArrayList<Tile>();
+		int x =  getX();
+		int y =  getY();
+		int lastX = getGrid().getHeight() - 1;
+		int lastY = getGrid().getWidth() - 1;
+		if (x==0) {
+			if (y==0) {
+				proxTiles.add(grid.getTile(x+1, y));
+				proxTiles.add(grid.getTile(x, y+1));
+				proxTiles.add(grid.getTile(x+1, y+1));
+			}
+			else if (y==lastY)  {
+				proxTiles.add(grid.getTile(x+1, y));
+				proxTiles.add(grid.getTile(x, y-1));
+				proxTiles.add(grid.getTile(x+1, y-1));
+			}
+			else {
+				proxTiles.add(grid.getTile(x+1, y));
+				proxTiles.add(grid.getTile(x+1, y-1));
+				proxTiles.add(grid.getTile(x+1, y+1));
+				proxTiles.add(grid.getTile(x, y-1));
+				proxTiles.add(grid.getTile(x, y+1));
+			}
+		}
+		else if (x == lastX) {
+			if (y == 0) {
+				proxTiles.add(grid.getTile(x - 1, y));
+				proxTiles.add(grid.getTile(x, y + 1));
+				proxTiles.add(grid.getTile(x - 1, y + 1));
+			} else if (y == lastY) {
+				proxTiles.add(grid.getTile(x - 1, y));
+				proxTiles.add(grid.getTile(x, y - 1));
+				proxTiles.add(grid.getTile(x - 1, y - 1));
+			} else {
+				proxTiles.add(grid.getTile(x - 1, y));
+				proxTiles.add(grid.getTile(x - 1, y - 1));
+				proxTiles.add(grid.getTile(x - 1, y + 1));
+				proxTiles.add(grid.getTile(x, y - 1));
+				proxTiles.add(grid.getTile(x, y + 1));
+			}
+		}
+		else {
+			proxTiles.add(grid.getTile(x - 1, y));
+			proxTiles.add(grid.getTile(x - 1, y - 1));
+			proxTiles.add(grid.getTile(x - 1, y + 1));
+			proxTiles.add(grid.getTile(x + 1, y));
+			proxTiles.add(grid.getTile(x + 1, y - 1));
+			proxTiles.add(grid.getTile(x + 1, y + 1));
+			proxTiles.add(grid.getTile(x, y - 1));
+			proxTiles.add(grid.getTile(x, y + 1));
+		}
+		return proxTiles;
 	}
 	
 }

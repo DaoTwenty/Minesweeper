@@ -1,5 +1,6 @@
 package Grid;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -19,6 +20,20 @@ public class GridGeneration {
 			case 1:
 				algorithmRandom();
 				break;
+		}
+		ArrayList<Tile> tiles = grid.getTiles();
+		for (Tile tile : tiles) {
+			if (tile.getType().equals("E")) {
+				int prox = 0;
+				ArrayList<Tile> proxTiles = tile.getProxTiles();
+				for (Tile oTile : proxTiles) {
+					if (oTile.getType().equals("B")) {
+						prox++;
+					}
+				}
+				EmptyTile emptyTile = (EmptyTile) tile;
+				emptyTile.setProx(prox);
+			}
 		}
 	}
 
