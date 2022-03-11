@@ -5,10 +5,11 @@ import javax.swing.*;
 public class NewGameButton extends JButton {
 
     private MinesweeperApp app;
-    private Icon icon;
+    private Icon icon = new ImageIcon("Data/Minesweeper_smiley.png");
 
     public  NewGameButton(MinesweeperApp app) {
         super();
+        setIcon(icon);
     }
 
 }

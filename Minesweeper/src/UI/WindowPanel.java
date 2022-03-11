@@ -11,6 +11,8 @@ public final class WindowPanel extends JPanel {
     public WindowPanel(MinesweeperApp app) {
         super();
         this.app = app;
+        setLayout(new SpringLayout());
+        add(headerPanel = new HeaderPanel(app));
     }
 
     public void notifyForUpdate() {

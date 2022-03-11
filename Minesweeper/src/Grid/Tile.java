@@ -35,7 +35,7 @@ public abstract class Tile {
 		return marked;
 	}
 
-	public void mark() {
+	public boolean mark() {
 		marked = !marked;
 		ArrayList<Tile> proxTiles = getProxTiles();
 		for (Tile tile  : proxTiles) {
@@ -49,6 +49,7 @@ public abstract class Tile {
 				}
 			}
 		}
+		return marked;
 	}
 
 	public boolean isHidden() {

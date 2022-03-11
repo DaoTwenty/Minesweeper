@@ -7,6 +7,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Timer;
 
 public class MinesweeperAppModel extends Observable{
 
@@ -18,6 +19,8 @@ public class MinesweeperAppModel extends Observable{
     private double density;
     private ArrayList<ChangeListener> listeners = new ArrayList<ChangeListener>();
     private boolean fail = false;
+    private int numMarked = 0;
+    private Timer timer;
 
     public MinesweeperAppModel() {
         getSavedPreferences();
@@ -52,7 +55,14 @@ public class MinesweeperAppModel extends Observable{
 
     public void isRightClicked(Tile tile) {
         if (!tile.isHidden()) {
-            tile.mark();
+            boolean marked = tile.mark();
+            stateChanges();
+            if (marked) {
+                numMarked++;
+            }
+            else {
+                numMarked--;
+            }
             stateChanges();
         }
     }
