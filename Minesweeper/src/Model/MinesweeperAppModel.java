@@ -19,6 +19,7 @@ public class MinesweeperAppModel extends Observable{
     private double density;
     private ArrayList<ChangeListener> listeners = new ArrayList<ChangeListener>();
     private boolean fail = false;
+    private boolean newGame = false;
     private int numMarked = 0;
     private Timer timer;
 
@@ -50,6 +51,7 @@ public class MinesweeperAppModel extends Observable{
         getSavedPreferences();
         grid = new Grid(height, width);
         GridGeneration gridGeneration = new GridGeneration(grid, generationAlgorithm, density);
+        newGame = true;
         stateChanges();
     }
 
@@ -108,5 +110,25 @@ public class MinesweeperAppModel extends Observable{
             fail = true;
         }
         stateChanges();
+    }
+
+    public void setFail(boolean fail) {
+        this.fail = fail;
+    }
+
+    public boolean isFail() {
+        return fail;
+    }
+
+    public void setNewGame(boolean newGame) {
+        this.newGame = newGame;
+    }
+
+    public boolean isNewGame() {
+        return newGame;
+    }
+
+    public Grid getGrid() {
+        return grid;
     }
 }

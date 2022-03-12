@@ -26,4 +26,7 @@ public final class HeaderPanel extends JPanel {
         springLayout.putConstraint(SpringLayout.EAST, timer, 5, SpringLayout.EAST, this );
     }
 
+    public void notifyForUpdate() {
+
+    }
 }
