@@ -108,14 +108,28 @@ public abstract class Tile {
 			}
 		}
 		else {
-			proxTiles.add(grid.getTile(x - 1, y));
-			proxTiles.add(grid.getTile(x - 1, y - 1));
-			proxTiles.add(grid.getTile(x - 1, y + 1));
-			proxTiles.add(grid.getTile(x + 1, y));
-			proxTiles.add(grid.getTile(x + 1, y - 1));
-			proxTiles.add(grid.getTile(x + 1, y + 1));
-			proxTiles.add(grid.getTile(x, y - 1));
-			proxTiles.add(grid.getTile(x, y + 1));
+			if (y == 0) {
+				proxTiles.add(grid.getTile(x - 1, y));
+				proxTiles.add(grid.getTile(x + 1, y));
+				proxTiles.add(grid.getTile(x, y + 1));
+				proxTiles.add(grid.getTile(x, y + 1));
+				proxTiles.add(grid.getTile(x - 1, y + 1));
+			} else if (y == lastY) {
+				proxTiles.add(grid.getTile(x - 1, y));
+				proxTiles.add(grid.getTile(x + 1, y));
+				proxTiles.add(grid.getTile(x, y - 1));
+				proxTiles.add(grid.getTile(x, y - 1));
+				proxTiles.add(grid.getTile(x - 1, y - 1));
+			} else {
+				proxTiles.add(grid.getTile(x - 1, y));
+				proxTiles.add(grid.getTile(x - 1, y - 1));
+				proxTiles.add(grid.getTile(x - 1, y + 1));
+				proxTiles.add(grid.getTile(x + 1, y));
+				proxTiles.add(grid.getTile(x + 1, y - 1));
+				proxTiles.add(grid.getTile(x + 1, y + 1));
+				proxTiles.add(grid.getTile(x, y - 1));
+				proxTiles.add(grid.getTile(x, y + 1));
+			}
 		}
 		return proxTiles;
 	}

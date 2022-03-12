@@ -1,6 +1,7 @@
 package UI;
 
 import javax.swing.*;
+import java.awt.*;
 
 public final class WindowPanel extends JPanel {
 
@@ -11,7 +12,7 @@ public final class WindowPanel extends JPanel {
     public WindowPanel(MinesweeperApp app) {
         super();
         this.app = app;
-        setLayout(new SpringLayout());
+        setLayout(new GridLayout(2,1));
         add(headerPanel = new HeaderPanel(app));
     }
 

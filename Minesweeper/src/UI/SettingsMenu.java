@@ -2,7 +2,7 @@ package UI;
 
 import javax.swing.*;
 
-public final class SettingsMenu extends JMenu {
+public final class SettingsMenu extends JMenuItem {
 
     MinesweeperApp app;
 
