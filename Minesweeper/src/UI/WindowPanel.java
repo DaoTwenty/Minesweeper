@@ -1,7 +1,6 @@
 package UI;
 
 import Grid.Grid;
-import Model.SingleComponentAspectRatioKeeperLayout;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,11 +15,13 @@ public final class WindowPanel extends JPanel {
         super();
         this.app = app;
         setLayout(new BorderLayout());
-        add(headerPanel = new HeaderPanel(app), BorderLayout.PAGE_START);
+        headerPanel = new HeaderPanel(app);
+        add(headerPanel, BorderLayout.PAGE_START);
         JPanel gridHolder = new JPanel();
         gridHolder.setLayout( new SingleComponentAspectRatioKeeperLayout());
         gridHolder.add(gridPanel = new GridPanel(app, grid), BorderLayout.CENTER);
         add(gridHolder);
+        setMinimumSize(getSize());
     }
 
     public void notifyForUpdate() {

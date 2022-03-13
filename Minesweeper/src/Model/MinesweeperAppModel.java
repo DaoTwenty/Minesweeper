@@ -181,6 +181,18 @@ public class MinesweeperAppModel extends Observable{
         else if (pngName.equals("graybomb")) {
             return "/Data/Minesweeper_bomb.png"; //replace with gray bomb
         }
+        else if (pngName.equals("happy")) {
+            return "/Data/Minesweeper_happy.png";
+        }
+        else if (pngName.equals("sad")) {
+            return "/Data/Minesweeper_sad.png";
+        }
+        else if (pngName.equals("cool")) {
+            return "/Data/Minesweeper_cool.png";
+        }
+        else if (pngName.equals("happy")) {
+            return "/Data/Minesweeper_surprised.png";
+        }
         else {
             return "";
         }

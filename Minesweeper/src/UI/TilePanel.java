@@ -2,10 +2,8 @@ package UI;
 
 import Grid.EmptyTile;
 import Grid.Tile;
-import Model.StretchIcon;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 

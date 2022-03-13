@@ -1,6 +1,7 @@
 package UI;
 
 import javax.swing.*;
+import java.awt.*;
 
 public final class HeaderPanel extends JPanel {
 
@@ -10,20 +11,23 @@ public final class HeaderPanel extends JPanel {
     private CounterPanel markedCounter;
 
     public HeaderPanel(MinesweeperApp app) {
-        super();
+        super( new SpringLayout());
         this.app = app;
         newGame = new NewGameButton(app);
-        timer = new CounterPanel(app);
-        markedCounter = new CounterPanel(app);
-        SpringLayout springLayout = new SpringLayout();
-        setLayout(springLayout);
-        add(markedCounter);
-        add(newGame);
-        add(timer);
-        springLayout.putConstraint(SpringLayout.WEST, markedCounter, 5, SpringLayout.WEST, this );
-        springLayout.putConstraint(SpringLayout.EAST, markedCounter, 5, SpringLayout.WEST, newGame );
-        springLayout.putConstraint(SpringLayout.EAST, newGame, 5, SpringLayout.WEST, timer );
-        springLayout.putConstraint(SpringLayout.EAST, timer, 5, SpringLayout.EAST, this );
+        JPanel centerPanel = new JPanel( new BorderLayout());
+        centerPanel.add(newGame, BorderLayout.CENTER);
+        timer = new CounterPanel();
+        JPanel rightPanel = new JPanel( new BorderLayout());
+        rightPanel.add(timer, BorderLayout.EAST);
+        markedCounter = new CounterPanel();
+        JPanel leftPanel = new JPanel( new BorderLayout());
+        leftPanel.add(markedCounter, BorderLayout.WEST);
+        add(leftPanel);
+        add(centerPanel);
+        add(rightPanel);
+        SpringUtilities.makeGrid(this, 1, 3, 10, 10, 10, 10);
+        setMinimumSize(getSize());
+        setMaximumSize( new Dimension(Integer.MAX_VALUE, getHeight()));
     }
 
     public void notifyForUpdate() {

@@ -13,13 +13,18 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 
 public class MinesweeperApp extends JFrame implements ChangeListener {
 
     private final MenuBar menuBar;
     private final WindowPanel windowPanel;
     private MinesweeperAppModel minesweeperAppModel = new MinesweeperAppModel();
+
+    public int getUnitSize() {
+        return unitSize;
+    }
+
+    private int unitSize = 30;
 
     public MinesweeperApp() throws HeadlessException {
         super("MineSweeper");
@@ -32,7 +37,7 @@ public class MinesweeperApp extends JFrame implements ChangeListener {
         pack();
         setMinimumSize(getSize());
         setVisible(true);
-        setResizable(false);
+        //setResizable(false);
 
     }
 

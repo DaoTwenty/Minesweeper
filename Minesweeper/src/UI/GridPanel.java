@@ -11,7 +11,7 @@ public final class GridPanel extends JPanel {
     private MinesweeperApp app;
     private Grid grid;
     private ArrayList<TilePanel> tiles = new ArrayList<>();
-    private static int size = 30;
+    private static int size;
 
     public GridPanel(MinesweeperApp app, Grid grid) {
         super();
@@ -19,6 +19,7 @@ public final class GridPanel extends JPanel {
         this.grid = grid;
         int x = grid.getHeight();
         int y = grid.getWidth();
+        size = app.getUnitSize();
         setPreferredSize(new Dimension(y*size, x*size));
         setMinimumSize(getSize());
         setLayout( new GridLayout( x, y));
