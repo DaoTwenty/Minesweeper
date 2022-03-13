@@ -20,6 +20,7 @@ public class MinesweeperAppModel extends Observable{
     private ArrayList<ChangeListener> listeners = new ArrayList<ChangeListener>();
     private boolean fail = false;
     private boolean newGame = false;
+    private boolean pressed = false;
     private int numMarked = 0;
     private Timer timer;
 
@@ -130,5 +131,58 @@ public class MinesweeperAppModel extends Observable{
 
     public Grid getGrid() {
         return grid;
+    }
+
+    public boolean isPressed() {
+        return pressed;
+    }
+
+    public void setPressed(boolean pressed) {
+        this.pressed = pressed;
+    }
+
+    public String getPNG(String pngName) {
+        if (pngName.equals("0")) {
+            return "/Data/Minesweeper_0.png";
+        }
+        else if (pngName.equals("1")) {
+            return "/Data/Minesweeper_1.png";
+        }
+        else if (pngName.equals("2")) {
+            return "/Data/Minesweeper_2.png";
+        }
+        else if (pngName.equals("3")) {
+            return "/Data/Minesweeper_3.png";
+        }
+        else if (pngName.equals("4")) {
+            return "/Data/Minesweeper_4.png";
+        }
+        else if (pngName.equals("5")) {
+            return "/Data/Minesweeper_5.png";
+        }
+        else if (pngName.equals("6")) {
+            return "/Data/Minesweeper_6.png";
+        }
+        else if (pngName.equals("7")) {
+            return "/Data/Minesweeper_7.png";
+        }
+        else if (pngName.equals("8")) {
+            return "/Data/Minesweeper_8.png";
+        }
+        else if (pngName.equals("flagged")) {
+            return "/Data/Minesweeper_flagged.png";
+        }
+        else if (pngName.equals("hidden")) {
+            return "/Data/Minesweeper_hidden.png";
+        }
+        else if (pngName.equals("redbomb")) {
+            return "/Data/Minesweeper_bomb.png"; //replace with red bomb
+        }
+        else if (pngName.equals("graybomb")) {
+            return "/Data/Minesweeper_bomb.png"; //replace with gray bomb
+        }
+        else {
+            return "";
+        }
     }
 }

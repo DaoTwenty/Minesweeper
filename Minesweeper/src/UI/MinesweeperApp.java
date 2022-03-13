@@ -3,6 +3,7 @@ package UI;
 import Model.MinesweeperAppModel;
 
 import javax.imageio.ImageIO;
+import javax.imageio.stream.FileImageInputStream;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -10,6 +11,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 public class MinesweeperApp extends JFrame implements ChangeListener {
 
@@ -24,9 +28,12 @@ public class MinesweeperApp extends JFrame implements ChangeListener {
         windowPanel = new WindowPanel(this, minesweeperAppModel.getGrid());
         setContentPane(windowPanel);
         minesweeperAppModel.addListener(this);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE) ;
-        pack() ;
-        setVisible(true) ;
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        pack();
+        setMinimumSize(getSize());
+        setVisible(true);
+        setResizable(false);
+
     }
 
     public MinesweeperAppModel getModel() {
@@ -38,15 +45,17 @@ public class MinesweeperApp extends JFrame implements ChangeListener {
         windowPanel.notifyForUpdate();
     }
 
-    public static BufferedImage getBufferedImage(String filename) {
+    public BufferedImage getBufferedImage(String filename) {
         BufferedImage image = null;
         try {
-            image = ImageIO.read(new File(filename));
+            URI uri = this.getClass().getResource(filename).toURI();
+            File file = new File(uri);
+            FileImageInputStream inputStream = new FileImageInputStream(file);
+            image = ImageIO.read(inputStream);
         }
-        catch (IOException e) {
+        catch (IOException | URISyntaxException e) {
             System.out.println(e);
         }
     return image;
     }
-
 }
