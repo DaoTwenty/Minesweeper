@@ -1,6 +1,8 @@
 package UI;
 
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 
 public final class HeaderPanel extends JPanel {
@@ -13,13 +15,17 @@ public final class HeaderPanel extends JPanel {
     public HeaderPanel(MinesweeperApp app) {
         super( new SpringLayout());
         this.app = app;
+        int size = (int) (1.5* app.getUnitSize());
         newGame = new NewGameButton(app);
         JPanel centerPanel = new JPanel( new BorderLayout());
         centerPanel.add(newGame, BorderLayout.CENTER);
-        timer = new CounterPanel();
+        centerPanel.setPreferredSize(new Dimension(size, size));
+        timer = new CounterPanel(app);
+        app.getModel().setClockListener(timer);
         JPanel rightPanel = new JPanel( new BorderLayout());
         rightPanel.add(timer, BorderLayout.EAST);
-        markedCounter = new CounterPanel();
+        markedCounter = new CounterPanel(app);
+        app.getModel().setCountListener(markedCounter);
         JPanel leftPanel = new JPanel( new BorderLayout());
         leftPanel.add(markedCounter, BorderLayout.WEST);
         add(leftPanel);

@@ -1,13 +1,16 @@
 package Model;
 
 import Grid.*;
+import UI.CountChangeEvent;
 import UI.MinesweeperApp;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.Timer;
+import javax.swing.Timer;
 
 public class MinesweeperAppModel extends Observable{
 
@@ -18,11 +21,20 @@ public class MinesweeperAppModel extends Observable{
     private int generationAlgorithm;
     private double density;
     private ArrayList<ChangeListener> listeners = new ArrayList<ChangeListener>();
+    private ChangeListener clockListener;
+    private ChangeListener countListener;
     private boolean fail = false;
     private boolean newGame = false;
     private boolean pressed = false;
+    private boolean gameStarted = false;
     private int numMarked = 0;
-    private Timer timer;
+    private int time = 0;
+    ActionListener taskPerformer = evt -> {
+        time ++;
+        updateClock();
+    };
+    int delay = 1000; //milliseconds
+    private Timer timer = new Timer(delay, taskPerformer);
 
     public MinesweeperAppModel() {
         getSavedPreferences();
@@ -62,19 +74,22 @@ public class MinesweeperAppModel extends Observable{
             stateChanges();
             if (marked) {
                 numMarked++;
+                updateCount();
             }
             else {
                 numMarked--;
+                updateCount();
             }
             stateChanges();
         }
     }
 
     public void isClicked(Tile tile) {
+        gameStarted = true;
         if (!tile.isMarked()) {
             if (tile.getType().equals("B")) {
                 tile.unHide();
-                fail = true;
+                setFail(true);
             }
             else {
                 EmptyTile emptyTile = (EmptyTile) tile;
@@ -108,13 +123,16 @@ public class MinesweeperAppModel extends Observable{
             }
         }
         else {
-            fail = true;
+            setFail(true);
         }
         stateChanges();
     }
 
     public void setFail(boolean fail) {
         this.fail = fail;
+        if (fail) {
+            endGame();
+        }
     }
 
     public boolean isFail() {
@@ -123,6 +141,16 @@ public class MinesweeperAppModel extends Observable{
 
     public void setNewGame(boolean newGame) {
         this.newGame = newGame;
+    }
+
+    public void startGame() {
+        gameStarted = true;
+        timer.start();
+    }
+
+    public void endGame() {
+        gameStarted = false;
+        timer.stop();
     }
 
     public boolean isNewGame() {
@@ -190,11 +218,32 @@ public class MinesweeperAppModel extends Observable{
         else if (pngName.equals("cool")) {
             return "/Data/Minesweeper_cool.png";
         }
-        else if (pngName.equals("happy")) {
+        else if (pngName.equals("surprised")) {
             return "/Data/Minesweeper_surprised.png";
+        }
+        else if (pngName.equals("happy pressed")) {
+            return "/Data/Minesweeper_happy_pressed.png";
         }
         else {
             return "";
         }
+    }
+
+    public void setCountListener(ChangeListener countListener) {
+        this.countListener = countListener;
+    }
+
+    public void setClockListener(ChangeListener clockListener) {
+        this.clockListener = clockListener;
+    }
+
+    public void updateClock() {
+        CountChangeEvent change = new CountChangeEvent(this, time);
+        clockListener.stateChanged(change);
+    }
+
+    public void updateCount() {
+        CountChangeEvent change = new CountChangeEvent(this, numMarked);
+        countListener.stateChanged(change);
     }
 }
