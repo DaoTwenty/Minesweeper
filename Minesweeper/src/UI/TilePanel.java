@@ -28,7 +28,7 @@ public class TilePanel extends JLabel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        //setIcon( new StretchIcon(image, true));
+        setIcon( new StretchIcon(image, true));
         //System.out.println("repainted");
     }
 
@@ -48,6 +48,7 @@ public class TilePanel extends JLabel {
         else {
             if (tile.isHidden()) {
                 if (tile.isMarked()) {
+                    System.out.println("marking");
                     image = app.getBufferedImage(app.getModel().getPNG("flagged"));
                 } else {
                     image = app.getBufferedImage(app.getModel().getPNG("hidden"));

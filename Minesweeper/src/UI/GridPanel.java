@@ -48,6 +48,5 @@ public final class GridPanel extends JPanel {
                 tilePanel.notifyForUpdate();
             }
         }
-        grid.print();
     }
 }

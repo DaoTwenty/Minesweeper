@@ -40,6 +40,7 @@ public class MinesweeperAppModel extends Observable{
         getSavedPreferences();
         grid = new Grid(height, width);
         GridGeneration gridGeneration = new GridGeneration(grid, generationAlgorithm, density);
+        System.out.println(grid.toString());
     }
 
     public void addListener(ChangeListener listener) {
@@ -57,7 +58,7 @@ public class MinesweeperAppModel extends Observable{
         height = 10;
         width = 20;
         generationAlgorithm = 1;
-        density = 0.2;
+        density = 0.1;
     }
 
     public void createNew() {
@@ -70,12 +71,17 @@ public class MinesweeperAppModel extends Observable{
         if (gameStarted) {
             endGame();
         }
+        fail = false;
+        finished = false;
         stateChanges();
         updateClock();
         updateCount();
     }
 
     public void isRightClicked(Tile tile) {
+        if (!gameStarted) {
+            startGame();
+        }
         if (tile.isHidden()) {
             boolean marked = tile.mark();
             stateChanges();
@@ -99,11 +105,18 @@ public class MinesweeperAppModel extends Observable{
             if (tile.getType().equals("B")) {
                 tile.unHide();
                 setFail(true);
+                endGame();
             }
             else {
                 EmptyTile emptyTile = (EmptyTile) tile;
                 if (emptyTile.isHidden()) {
-                    emptyTile.unHide();
+                    if (emptyTile.getProx() == 0) {
+                        emptyTile.unHide();
+                        revealProx(emptyTile);
+                    }
+                    else {
+                        emptyTile.unHide();
+                    }
                 }
                 else {
                     revealProx(emptyTile);
@@ -118,7 +131,7 @@ public class MinesweeperAppModel extends Observable{
         ArrayList<Tile> proxTiles = tile.getProxTiles();
         for (Tile oTile : proxTiles) {
             if (oTile.getType().equals("B")) {
-                if (!tile.isMarked()) {
+                if (!oTile.isMarked()) {
                     bombsMarked = false;
                     Bomb bTile = (Bomb) oTile;
                     bTile.setNotFound(true);
@@ -126,12 +139,17 @@ public class MinesweeperAppModel extends Observable{
             }
         }
         if (bombsMarked) {
-            for (Tile oTile : tile.getProxTiles()) {
+            for (Tile oTile : proxTiles) {
                 if (!oTile.isMarked()) {
-                    EmptyTile oEmptyTile = (EmptyTile) oTile;
-                    oEmptyTile.unHide();
-                    if (oEmptyTile.getProx() == 0) {
-                        revealProx(oEmptyTile);
+                    if (oTile.getType().equals("E")) {
+                        EmptyTile oEmptyTile = (EmptyTile) oTile;
+                        if (oEmptyTile.isHidden()) {
+                            oEmptyTile.unHide();
+                            if (oEmptyTile.getProx() ==  0) {
+                                System.out.println("chain reaction " + oEmptyTile.getX() + " " + oEmptyTile.getY());
+                                revealProx(oEmptyTile);
+                            }
+                        }
                     }
                 }
             }
@@ -139,7 +157,6 @@ public class MinesweeperAppModel extends Observable{
         else {
             setFail(true);
         }
-        stateChanges();
     }
 
     public void setFail(boolean fail) {
@@ -168,6 +185,7 @@ public class MinesweeperAppModel extends Observable{
         timer.stop();
     }
 
+
     public boolean isNewGame() {
         return newGame;
     }
@@ -182,6 +200,10 @@ public class MinesweeperAppModel extends Observable{
 
     public void setPressed(boolean pressed) {
         this.pressed = pressed;
+    }
+
+    public boolean isFinished() {
+        return finished;
     }
 
     public String getPNG(String pngName) {

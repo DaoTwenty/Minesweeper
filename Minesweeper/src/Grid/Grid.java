@@ -27,7 +27,9 @@ public class Grid {
 	}
 	
 	public void add(Tile tile) {
-		tiles.add(tile);
+		System.out.print(" to " + tile.getX() + " ," +tile.getY());
+		System.out.println("");
+		tiles.add(tile.getX()*width + tile.getY(),tile);
 	}
 
 	public Tile getTile(int n) {
@@ -35,8 +37,9 @@ public class Grid {
 	}
 
 	public Tile getTile(int x, int y)  {
-		int n = x*height + y;
-		return getTile(n);
+		int n = (x*width) + y;
+		Tile tile =  getTile(n);
+		return tile;
 	}
 	
 	@Override
@@ -44,7 +47,7 @@ public class Grid {
 		String grid = "";
 		for (int i = 0; i < height; i++) {
 			for (int j = 0; j < width; j++) {
-				Tile tile = tiles.get(i*height + j);
+				Tile tile = getTile(i, j);
 				grid += tile.toString();
 			}
 		grid += "\n";

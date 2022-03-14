@@ -9,12 +9,13 @@ public abstract class Tile {
 	private final int y;
 	private final Grid grid;
 	private boolean marked = false;
-	private boolean hidden = true;
+	private boolean hidden;
 	
 	public Tile(int x, int y, Grid grid) {
 		this.x = x;
 		this.y = y;
 		this.grid = grid;
+		hidden = true;
 	}
 	
 	public int getX() {
@@ -62,7 +63,13 @@ public abstract class Tile {
 	
 	@Override
 	public String toString() {
-		return getType();
+		if (getType().equals("B")) {
+			return "X";
+		}
+		else {
+			EmptyTile eTile = (EmptyTile) this;
+			return Integer.toString(eTile.getProx());
+		}
 	}
 
 	public ArrayList<Tile> getProxTiles() {
@@ -111,13 +118,13 @@ public abstract class Tile {
 			if (y == 0) {
 				proxTiles.add(grid.getTile(x - 1, y));
 				proxTiles.add(grid.getTile(x + 1, y));
-				proxTiles.add(grid.getTile(x, y + 1));
+				proxTiles.add(grid.getTile(x + 1, y + 1));
 				proxTiles.add(grid.getTile(x, y + 1));
 				proxTiles.add(grid.getTile(x - 1, y + 1));
 			} else if (y == lastY) {
 				proxTiles.add(grid.getTile(x - 1, y));
 				proxTiles.add(grid.getTile(x + 1, y));
-				proxTiles.add(grid.getTile(x, y - 1));
+				proxTiles.add(grid.getTile(x + 1, y - 1));
 				proxTiles.add(grid.getTile(x, y - 1));
 				proxTiles.add(grid.getTile(x - 1, y - 1));
 			} else {

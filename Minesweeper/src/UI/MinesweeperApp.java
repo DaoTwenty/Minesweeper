@@ -48,6 +48,7 @@ public class MinesweeperApp extends JFrame implements ChangeListener {
     @Override
     public void stateChanged(ChangeEvent e) {
         windowPanel.notifyForUpdate();
+        validate();
     }
 
     public BufferedImage getBufferedImage(String filename) {
