@@ -2,9 +2,11 @@ package UI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 
-public class NewGameButton extends JButton {
+public class NewGameButton extends JButton implements ActionListener {
 
     private MinesweeperApp app;
     private ImageIcon icon;
@@ -27,6 +29,11 @@ public class NewGameButton extends JButton {
         //setRolloverIcon(myIcon2);
         setPressedIcon(iconPressed);
         //setDisabledIcon(myIcon4);
+        addActionListener(this);
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        app.getModel().createNew();
+    }
 }

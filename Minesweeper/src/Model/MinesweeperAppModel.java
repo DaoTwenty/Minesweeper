@@ -65,11 +65,18 @@ public class MinesweeperAppModel extends Observable{
         grid = new Grid(height, width);
         GridGeneration gridGeneration = new GridGeneration(grid, generationAlgorithm, density);
         newGame = true;
+        time = 0;
+        numMarked = 0;
+        if (gameStarted) {
+            endGame();
+        }
         stateChanges();
+        updateClock();
+        updateCount();
     }
 
     public void isRightClicked(Tile tile) {
-        if (!tile.isHidden()) {
+        if (tile.isHidden()) {
             boolean marked = tile.mark();
             stateChanges();
             if (marked) {
@@ -85,7 +92,9 @@ public class MinesweeperAppModel extends Observable{
     }
 
     public void isClicked(Tile tile) {
-        gameStarted = true;
+        if (!gameStarted) {
+            startGame();
+        }
         if (!tile.isMarked()) {
             if (tile.getType().equals("B")) {
                 tile.unHide();
@@ -111,14 +120,19 @@ public class MinesweeperAppModel extends Observable{
             if (oTile.getType().equals("B")) {
                 if (!tile.isMarked()) {
                     bombsMarked = false;
+                    Bomb bTile = (Bomb) oTile;
+                    bTile.setNotFound(true);
                 }
             }
         }
         if (bombsMarked) {
-            for (Tile oTile : tile.getGrid().getTiles()) {
+            for (Tile oTile : tile.getProxTiles()) {
                 if (!oTile.isMarked()) {
                     EmptyTile oEmptyTile = (EmptyTile) oTile;
                     oEmptyTile.unHide();
+                    if (oEmptyTile.getProx() == 0) {
+                        revealProx(oEmptyTile);
+                    }
                 }
             }
         }
@@ -141,6 +155,7 @@ public class MinesweeperAppModel extends Observable{
 
     public void setNewGame(boolean newGame) {
         this.newGame = newGame;
+        stateChanges();
     }
 
     public void startGame() {
@@ -204,10 +219,13 @@ public class MinesweeperAppModel extends Observable{
             return "/Data/Minesweeper_hidden.png";
         }
         else if (pngName.equals("redbomb")) {
-            return "/Data/Minesweeper_bomb.png"; //replace with red bomb
+            return "/Data/Minesweeper_bomb_red.png";
         }
         else if (pngName.equals("graybomb")) {
-            return "/Data/Minesweeper_bomb.png"; //replace with gray bomb
+            return "/Data/Minesweeper_bomb.png";
+        }
+        else if (pngName.equals("crossedbomb")) {
+            return "/Data/Minesweeper_bomb_crossed.png";
         }
         else if (pngName.equals("happy")) {
             return "/Data/Minesweeper_happy.png";

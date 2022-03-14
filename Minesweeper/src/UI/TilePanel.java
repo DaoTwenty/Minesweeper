@@ -1,5 +1,6 @@
 package UI;
 
+import Grid.Bomb;
 import Grid.EmptyTile;
 import Grid.Tile;
 
@@ -12,13 +13,14 @@ public class TilePanel extends JLabel {
     MinesweeperApp app;
     Tile tile;
     BufferedImage image;
-    //TileMouseListener mouseListener;
+    TileMouseListener mouseListener;
 
     public TilePanel(MinesweeperApp app, Tile tile) {
         super();
         this.app = app;
         this.tile = tile;
-        //mouseListener = new TileMouseListener(app, this);
+        mouseListener = new TileMouseListener(app, this);
+        addMouseListener(mouseListener);
         image = app.getBufferedImage(app.getModel().getPNG("hidden"));
         setIcon( new StretchIcon(image, true));
     }
@@ -27,16 +29,20 @@ public class TilePanel extends JLabel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         //setIcon( new StretchIcon(image, true));
-        System.out.println("repainted");
+        //System.out.println("repainted");
     }
 
     public void updateImage() {
         if (app.getModel().isFail() && tile.getType().equals("B")) {
+            Bomb bomb = (Bomb) tile;
             if (tile.isMarked()){
-                image = app.getBufferedImage(app.getModel().getPNG("redbomb"));  //replace with red bomb tile
+                image = app.getBufferedImage(app.getModel().getPNG("crossedbomb"));
+            }
+            else if (bomb.isNotFound()) {
+                image = app.getBufferedImage(app.getModel().getPNG("redbomb"));
             }
             else {
-                image = app.getBufferedImage(app.getModel().getPNG("graybomb"));  //replace with gray bomb tile
+                image = app.getBufferedImage(app.getModel().getPNG("graybomb"));
             }
         }
         else {
@@ -80,7 +86,7 @@ public class TilePanel extends JLabel {
                 }
             }
         }
-        System.out.print("image updated");
+        //System.out.print("image updated");
     }
 
 
@@ -94,7 +100,7 @@ public class TilePanel extends JLabel {
             updateImage();
         }
         repaint();
-        System.out.println("tile updated");
+        //System.out.println("tile updated");
     }
 
     public Grid.Tile getTile() {

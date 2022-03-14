@@ -22,14 +22,18 @@ public class TileMouseListener extends MouseAdapter {
     public final void mouseClicked(MouseEvent e) {
         MinesweeperAppModel model = app.getModel();
         Tile tile = tilePanel.getTile();
+        //System.out.println("There is a ");
         if (SwingUtilities.isLeftMouseButton(e)) {
+            System.out.println("left click at " + Integer.toString(tile.getX()) + ", " + Integer.toString(tile.getY()));
             model.isClicked(tile);
         }
         else if (SwingUtilities.isRightMouseButton(e)) {
+            System.out.println("right click at " + Integer.toString(tile.getX()) + ", " + Integer.toString(tile.getY()));
             model.isRightClicked(tile);
         }
     }
 
+    /*
     @Override
     public final void mousePressed(MouseEvent e) {
         MinesweeperAppModel model = app.getModel();
@@ -59,4 +63,6 @@ public class TileMouseListener extends MouseAdapter {
     public final void mouseExited(MouseEvent e) {
         tilePanel.notifyExited();
     }
+
+     */
 }

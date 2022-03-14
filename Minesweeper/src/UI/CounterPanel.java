@@ -49,7 +49,7 @@ public final class CounterPanel extends JPanel implements ChangeListener {
     }
 
     public void setCount(int x) {
-        if ((x < 999) && (x >= 0)) {
+        if ((x < 999) && (x > 0)) {
             if (x<10) {
                 String xS = Integer.toString(x);
                 updateRight(String.valueOf(xS.charAt(0)));
@@ -58,6 +58,11 @@ public final class CounterPanel extends JPanel implements ChangeListener {
                 String xS = Integer.toString(x);
                 updateCenter(String.valueOf(xS.charAt(0)));
                 updateRight(String.valueOf(xS.charAt(1)));
+            }
+            else if (x == 0)  {
+                updateRight("0");
+                updateCenter("0");
+                updateLeft("0");
             }
             else {
                 String xS = Integer.toString(x);

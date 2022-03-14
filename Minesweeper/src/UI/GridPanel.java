@@ -41,11 +41,13 @@ public final class GridPanel extends JPanel {
             for (Tile tile : grid.getTiles()) {
                 add(new TilePanel(app, tile));
             }
+            app.getModel().setNewGame(false);
         }
         else {
             for (TilePanel tilePanel : tiles) {
                 tilePanel.notifyForUpdate();
             }
         }
+        grid.print();
     }
 }

@@ -52,4 +52,19 @@ public class Grid {
 		return grid;
 	}
 
+	public void print() {
+		for (int i = 0; i < height; i++) {
+			for (int j = 0; j < width; j++) {
+				Tile tile = getTile(i,j);
+				if (tile.isHidden()) {
+					System.out.print("°");
+				}
+				else {
+					System.out.print(tile.getType());
+				}
+			}
+			System.out.println("");
+		}
+	}
+
 }
