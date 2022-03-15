@@ -21,6 +21,10 @@ public class Grid {
 	public int getWidth() {
 		return width;
 	}
+
+	public int size()  {
+		return tiles.size();
+	}
 	
 	public ArrayList<Tile> getTiles() {
 		return tiles;

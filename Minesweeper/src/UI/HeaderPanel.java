@@ -37,6 +37,6 @@ public final class HeaderPanel extends JPanel {
     }
 
     public void notifyForUpdate() {
-
+        newGame.notifyForUpdate();
     }
 }

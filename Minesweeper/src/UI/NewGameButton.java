@@ -1,5 +1,7 @@
 package UI;
 
+import Model.MinesweeperAppModel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,11 +13,12 @@ public class NewGameButton extends JButton implements ActionListener {
     private MinesweeperApp app;
     private ImageIcon icon;
     private ImageIcon iconPressed;
+    private int size;
 
     public  NewGameButton(MinesweeperApp app) {
         super();
         this.app = app;
-        int size = (int) (1.5*app.getUnitSize());
+        size = (int) (1.5*app.getUnitSize());
         BufferedImage image = app.getBufferedImage(app.getModel().getPNG("happy"));
         icon =  new ImageIcon(image.getScaledInstance(size, size, Image.SCALE_SMOOTH));
         BufferedImage imagePressed = app.getBufferedImage(app.getModel().getPNG("happy pressed"));
@@ -36,4 +39,24 @@ public class NewGameButton extends JButton implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         app.getModel().createNew();
     }
+
+    public void notifyForUpdate() {
+        MinesweeperAppModel model = app.getModel();
+        if (model.isFinished()) {
+            if (model.isFail()) {
+                BufferedImage image = app.getBufferedImage(app.getModel().getPNG("sad"));
+                icon =  new ImageIcon(image.getScaledInstance(size, size, Image.SCALE_SMOOTH));
+                setIcon(icon);
+                System.out.println("fail button");
+            }
+            else {
+                BufferedImage image = app.getBufferedImage(app.getModel().getPNG("cool"));
+                icon =  new ImageIcon(image.getScaledInstance(size, size, Image.SCALE_SMOOTH));
+                setIcon(icon);
+                System.out.println("success button");
+            }
+            repaint();
+        }
+    }
+
 }

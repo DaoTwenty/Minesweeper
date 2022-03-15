@@ -33,16 +33,16 @@ public class TilePanel extends JLabel {
     }
 
     public void updateImage() {
-        if (app.getModel().isFail() && tile.getType().equals("B")) {
-            Bomb bomb = (Bomb) tile;
-            if (tile.isMarked()){
-                image = app.getBufferedImage(app.getModel().getPNG("crossedbomb"));
-            }
-            else if (bomb.isNotFound()) {
-                image = app.getBufferedImage(app.getModel().getPNG("redbomb"));
-            }
-            else {
-                image = app.getBufferedImage(app.getModel().getPNG("graybomb"));
+        if (app.getModel().isFail()) {
+            if (tile.getType().equals("B")) {
+                Bomb bomb = (Bomb) tile;
+                if (tile.isMarked()) {
+                    image = app.getBufferedImage(app.getModel().getPNG("crossedbomb"));
+                } else if (bomb.isNotFound()) {
+                    image = app.getBufferedImage(app.getModel().getPNG("redbomb"));
+                } else {
+                    image = app.getBufferedImage(app.getModel().getPNG("graybomb"));
+                }
             }
         }
         else {

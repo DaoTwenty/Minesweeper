@@ -27,6 +27,9 @@ public class MinesweeperAppModel extends Observable{
     private boolean newGame = false;
     private boolean pressed = false;
     private boolean gameStarted = false;
+    private boolean block = false;
+    private int numBomb;
+    private int numHidden;
     private int numMarked = 0;
     private int time = 0;
     ActionListener taskPerformer = evt -> {
@@ -39,7 +42,9 @@ public class MinesweeperAppModel extends Observable{
     public MinesweeperAppModel() {
         getSavedPreferences();
         grid = new Grid(height, width);
+        numHidden = grid.size();
         GridGeneration gridGeneration = new GridGeneration(grid, generationAlgorithm, density);
+        numBomb = gridGeneration.getNumBomb();
         System.out.println(grid.toString());
     }
 
@@ -79,50 +84,63 @@ public class MinesweeperAppModel extends Observable{
     }
 
     public void isRightClicked(Tile tile) {
-        if (!gameStarted) {
-            startGame();
-        }
-        if (tile.isHidden()) {
-            boolean marked = tile.mark();
-            stateChanges();
-            if (marked) {
-                numMarked++;
-                updateCount();
+        if (!block) {
+            if (!gameStarted) {
+                startGame();
             }
-            else {
-                numMarked--;
-                updateCount();
+            if (tile.isHidden()) {
+                boolean marked = tile.mark();
+                stateChanges();
+                if (marked) {
+                    numMarked++;
+                    updateCount();
+                } else {
+                    numMarked--;
+                    updateCount();
+                }
+                stateChanges();
             }
-            stateChanges();
         }
     }
 
+    public void unHide(Tile tile) {
+        numHidden--;
+        tile.unHide();
+    }
+
     public void isClicked(Tile tile) {
-        if (!gameStarted) {
-            startGame();
-        }
-        if (!tile.isMarked()) {
-            if (tile.getType().equals("B")) {
-                tile.unHide();
-                setFail(true);
-                endGame();
+        if (!block) {
+            if (!gameStarted) {
+                startGame();
             }
-            else {
-                EmptyTile emptyTile = (EmptyTile) tile;
-                if (emptyTile.isHidden()) {
-                    if (emptyTile.getProx() == 0) {
-                        emptyTile.unHide();
+            if (!tile.isMarked()) {
+                if (tile.getType().equals("B")) {
+                    unHide(tile);
+                    setFail(true);
+                    endGame();
+                } else {
+                    EmptyTile emptyTile = (EmptyTile) tile;
+                    if (emptyTile.isHidden()) {
+                        if (emptyTile.getProx() == 0) {
+                            unHide(emptyTile);
+                            revealProx(emptyTile);
+                        } else {
+                            unHide(emptyTile);
+                        }
+                    } else {
                         revealProx(emptyTile);
                     }
-                    else {
-                        emptyTile.unHide();
-                    }
                 }
-                else {
-                    revealProx(emptyTile);
-                }
+                checkVictory();
+                stateChanges();
             }
-            stateChanges();
+        }
+    }
+
+    public void checkVictory() {
+        if (numHidden == grid.size()) {
+            finished = true;
+            block = true;
         }
     }
 
@@ -144,7 +162,7 @@ public class MinesweeperAppModel extends Observable{
                     if (oTile.getType().equals("E")) {
                         EmptyTile oEmptyTile = (EmptyTile) oTile;
                         if (oEmptyTile.isHidden()) {
-                            oEmptyTile.unHide();
+                            unHide(oEmptyTile);
                             if (oEmptyTile.getProx() ==  0) {
                                 System.out.println("chain reaction " + oEmptyTile.getX() + " " + oEmptyTile.getY());
                                 revealProx(oEmptyTile);
@@ -182,6 +200,7 @@ public class MinesweeperAppModel extends Observable{
 
     public void endGame() {
         gameStarted = false;
+        block = true;
         timer.stop();
     }
 

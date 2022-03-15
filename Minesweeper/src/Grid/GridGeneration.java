@@ -11,6 +11,7 @@ public class GridGeneration {
 	private final Grid grid;
 	private final int generationAlgorithm;
 	private double density;
+	private int numBomb;
 	
 	public GridGeneration(Grid grid, int generationAlgorithm, double density) {
 		this.grid = grid;
@@ -18,7 +19,7 @@ public class GridGeneration {
 		this.generationAlgorithm = generationAlgorithm;
 		switch (this.generationAlgorithm) {
 			case 1:
-				algorithmRandom();
+				numBomb = algorithmRandom();
 				break;
 		}
 		ArrayList<Tile> tiles = grid.getTiles();
@@ -44,8 +45,13 @@ public class GridGeneration {
 	public int getAlgorithm() {
 		return generationAlgorithm;
 	}
-	
-	private void algorithmRandom() {
+
+	public int getNumBomb() {
+		return numBomb;
+	}
+
+	private int algorithmRandom() {
+		int num = 0;
 		int h = grid.getHeight();
 		int w = grid.getWidth();
 		Random random = new Random();
@@ -53,12 +59,14 @@ public class GridGeneration {
 			for (int j = 0; j < w; j++) {
 				if (random.nextFloat() <  density) {
 					grid.add(new Bomb(i ,j, grid));
+					num++;
 				}
 				else {
 					grid.add(new EmptyTile(i ,j, grid));
 				}
 			}
 		}
+		return num;
 	}
 	
 }
